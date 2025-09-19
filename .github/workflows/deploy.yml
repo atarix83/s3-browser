@@ -1,0 +1,32 @@
+name: Deploy Angular app to GitHub Pages
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Set S3 credentials in environment.prod.ts
+        run: |
+          echo "export const environment = {" > src/environments/environment.prod.ts
+          echo "  production: true," >> src/environments/environment.prod.ts
+          echo "  s3: {" >> src/environments/environment.prod.ts
+          echo "    accessKeyId: '${{ secrets.AWS_ACCESS_KEY_ID }}'," >> src/environments/environment.prod.ts
+          echo "    secretAccessKey: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'," >> src/environments/environment.prod.ts
+          echo "    region: '${{ secrets.AWS_REGION }}'," >> src/environments/environment.prod.ts
+          echo "    bucketName: '${{ secrets.S3_BUCKET_NAME }}'" >> src/environments/environment.prod.ts
+          echo "  }" >> src/environments/environment.prod.ts
+          echo "};" >> src/environments/environment.prod.ts
+      - name: Build Angular app
+        run: npm run build:ghpages
+      - name: Deploy to GitHub Pages
+        run: npm run deploy
+

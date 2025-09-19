@@ -1,0 +1,7 @@
+<div>
+  <h2>Carica file su S3</h2>
+  <input type="file" (change)="onFileSelected($event)" />
+  <button (click)="uploadFile()">Carica</button>
+  <p>{{ uploadStatus }}</p>
+</div>
+
