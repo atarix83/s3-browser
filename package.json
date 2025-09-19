@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:ghpages": "ng build --base-href=/S3-browser/ --output-path=dist/s3-browser",
-    "deploy": "ng run S3-browser:build --base-href=/S3-browser/ && npx angular-cli-ghpages --dir=dist/s3-browser",
+    "deploy": "ng run S3-browser:build --base-href=/S3-browser/ && npx angular-cli-ghpages --dir=dist/s3-browser/browser",
     "lint": "eslint . --ext .ts,.html"
   },
   "private": true,
